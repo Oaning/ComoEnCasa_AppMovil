@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menuInicio"
+        android:title="@string/menu_inicio"
+        android:icon="@drawable/hogar"
+        app:showAsAction="always|withText"
+        />
+    <item
+        android:id="@+id/menuFavoritos"
+        android:title="@string/menu_favoritos"
+        android:icon="@drawable/favorito"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/menuMenuSemanal"
+        android:title="@string/menu_menu_semanal"
+        android:icon="@drawable/calendario"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/menuNevera"
+        android:title="@string/menu_nevera"
+        android:icon="@drawable/nevera"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/menuPerfil"
+        android:title="@string/menu_perfil"
+        android:icon="@drawable/paquita"
+        app:showAsAction="always|withText"/>
+
+
+
+</menu>

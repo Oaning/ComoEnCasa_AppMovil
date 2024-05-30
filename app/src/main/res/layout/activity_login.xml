@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/loginLogo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/comoencasa"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"/>
+
+    <TextView
+        android:id="@+id/loginDatos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login_datos"
+        android:layout_below="@id/loginLogo"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/rojoClaro"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/loginUsuario_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginDatos"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/login_email"
+        android:layout_marginTop="6dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/loginUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/rojoClaro"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/loginPass_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginUsuario_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/login_contraseña"
+        android:layout_marginTop="6dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/loginPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/rojoClaro"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/loginBotonAcceder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginPass_layout"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/login_boton_acceder"
+        android:backgroundTint="@color/rojoOscuro"/>
+
+    <TextView
+        android:id="@+id/loginNoRegistrado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/login_no_registrado"
+        android:layout_below="@id/loginBotonAcceder"
+        android:layout_marginTop="24dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/turquesaClaro"
+        />
+
+    <Button
+        android:id="@+id/loginBotonRegistrarse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginNoRegistrado"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/login_boton_registrarse"
+        android:backgroundTint="@color/turquesaOscuro"/>
+
+</RelativeLayout>

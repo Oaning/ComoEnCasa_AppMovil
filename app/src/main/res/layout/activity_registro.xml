@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/registroLogo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/comoencasa"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"/>
+
+    <TextView
+        android:id="@+id/registroDatos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/registro_datos"
+        android:layout_below="@id/registroLogo"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/rojoClaro"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/registroUsuario_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registroDatos"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/registro_usuario"
+        android:layout_marginTop="6dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registroUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/rojoClaro"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/registroEmail_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registroUsuario_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/registro_Email"
+        android:layout_marginTop="6dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registroEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/rojoClaro"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/registroPass_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registroEmail_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:hint="@string/registro_contraseña"
+        android:layout_marginTop="6dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registroPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/rojoClaro"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/registroBoton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registroPass_layout"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/registro_boton"
+        android:backgroundTint="@color/rojoOscuro"/>
+
+</RelativeLayout>

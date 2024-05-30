@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Como en Casa</string>
+    <!-- Strings de la pantalla inicio -->
+    <string name="inicio_receta_recomendada">La receta recomendada es...</string>
+    <string name="inicio_buscas_receta">¿Quieres buscar una receta?</string>
+    <string name="inicio_primer_ingrediente">Primer ingrediente:</string>
+    <string name="inicio_segundo_ingrediente">Segundo ingrediente:</string>
+    <string name="inicio_tercer_ingrediente">Tercer ingrediente:</string>
+    <string name="inicio_boton_buscar">Buscar receta</string>
+
+    <!-- Strings de la barra de menú -->
+    <string name="menu_inicio">Inicio</string>
+    <string name="menu_favoritos">Favoritos</string>
+    <string name="menu_menu_semanal">Menú semanal</string>
+    <string name="menu_nevera">Nevera</string>
+    <string name="menu_perfil">Perfil</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <!-- Strings de la ventana de login -->
+    <string name="login_datos">Introduzca sus datos:</string>
+    <string name="login_email">E-Mail</string>
+    <string name="login_contraseña">Contraseña</string>
+    <string name="login_boton_acceder">Acceder</string>
+    <string name="login_no_registrado">¿No está registrado?</string>
+    <string name="login_boton_registrarse">Registrarse</string>
+
+    <!-- Strings de la ventana de registro -->
+    <string name="registro_datos">Rellene los siguientes campos:</string>
+    <string name="registro_usuario">Usuario</string>
+    <string name="registro_Email">E-Mail</string>
+    <string name="registro_contraseña">Contraseña</string>
+    <string name="registro_boton">Registrarse</string>
+
+    <!-- Strings de la ventana de perfil -->
+    <string name="perfil_usuario">Usuario: </string>
+    <string name="perfil_Email">E-Mail: </string>
+    <string name="perfil_contraseña">Contraseña: </string>
+    <string name="perfil_boton_aceptar">Aceptar</string>
+    <string name="perfil_boton_modificar">Modificar</string>
+
+    <!-- Strings de las ventanas menú semanal y nevera -->
+    <string name="menusemanal_titulo">Menú semanal</string>
+    <string name="nevera_titulo">Nevera</string>
+    <string name="boton_volver">Volver</string>
+
+</resources>
