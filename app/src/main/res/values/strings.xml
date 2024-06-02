@@ -43,4 +43,6 @@
     <string name="nevera_titulo">Nevera</string>
     <string name="boton_volver">Volver</string>
 
+    <!-- String del item receta -->
+    <string name="item_nombre_receta">Nombre receta</string>
 </resources>
