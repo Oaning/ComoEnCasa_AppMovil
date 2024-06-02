@@ -26,17 +26,6 @@ class LoginActivity : AppCompatActivity() {
 
         retrofit = getRetrofit()
         initUI()
-        //si el usuario no está registrado y se quiere registrar, se le manda a la página de registro
-        /*val botonRegistrarse = findViewById<Button>(R.id.loginBotonRegistrarse)
-        botonRegistrarse.setOnClickListener {
-            val intentRegistro = Intent(this, RegistroActivity::class.java)
-            startActivity(intentRegistro)
-        }
-
-        //si el usuario está registrado y los datos son correctos, accede a la actividad principal
-        iniciarSesion()
-        */
-
     }
 
     private fun getRetrofit(): Retrofit {
@@ -48,6 +37,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initUI(){
+        //si el usuario no está registrado y se quiere registrar, se le manda a la página de registro
+        val botonRegistrarse = findViewById<Button>(R.id.loginBotonRegistrarse)
+        botonRegistrarse.setOnClickListener {
+            val intentRegistro = Intent(this, RegistroActivity::class.java)
+            startActivity(intentRegistro)
+        }
+
+        //en caso de que esté registrado, se recogen los datos email y contraseña para intentar iniciar sesión
         val email = binding.loginUsuario.text.toString()
         val pass = binding.loginPass.text.toString()
         Log.i("jeroana", "initui")
