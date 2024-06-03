@@ -12,28 +12,21 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
+import java.net.SocketTimeoutException
+import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var  binding: ActivityLoginBinding
-    private lateinit var retrofit: Retrofit
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_login)
-
-        retrofit = getRetrofit()
         initUI()
-    }
-
-    private fun getRetrofit(): Retrofit {
-        return Retrofit
-            .Builder()
-            .baseUrl("http://192.168.1.106:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
     }
 
     private fun initUI(){
@@ -69,13 +62,23 @@ class LoginActivity : AppCompatActivity() {
             val pass = findViewById<TextInputEditText>(R.id.loginPass).text.toString()
             if (validarDatos(email, pass)) {
                 val loginData = LoginRequest(email, pass)
-                CoroutineScope(Dispatchers.IO).launch {
-                    val response: UserResponse? = retrofit.create(ApiService::class.java).getUser(loginData)
-                    if (response != null) {
-                        Log.i("jeroana", response.toString())
-                        startActivity(intentAcceso)
-                    } else {
-                        Toast.makeText(this@LoginActivity, "Email o contraseña incorrectos", Toast.LENGTH_LONG).show()
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        Log.i("jeroana", "corrutina")
+                        val response: UserResponse? =
+                            Los70Fit.retrofitInstance.create(ApiService::class.java).getUser(loginData)
+                        if (response != null) {
+                            Log.i("jeroana", response.toString())
+                            startActivity(intentAcceso)
+                        } else {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Email o contraseña incorrectos",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } catch(e: SocketTimeoutException){
+                        Toast.makeText(this@LoginActivity, "solicitud ha excedido tiempo de espera", Toast.LENGTH_LONG).show()
                     }
                 }
             }
