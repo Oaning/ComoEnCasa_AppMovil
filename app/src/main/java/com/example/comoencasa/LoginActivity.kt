@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
     private fun getRetrofit(): Retrofit {
         return Retrofit
             .Builder()
-            .baseUrl("http://10.0.2.2:8080/")
+            .baseUrl("http://192.168.1.106:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -45,21 +45,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         //en caso de que esté registrado, se recogen los datos email y contraseña para intentar iniciar sesión
-        val email = binding.loginUsuario.text.toString()
-        val pass = binding.loginPass.text.toString()
+        iniciarSesion();
         Log.i("jeroana", "initui")
-        if (validarDatos(email, pass)) {
-            val loginData = LoginRequest(email, pass)
-            CoroutineScope(Dispatchers.IO).launch {
-                val response: UserResponse? = retrofit.create(ApiService::class.java).getUser(loginData)
-                if (response != null) {
-                    Log.i("jeroana", response.toString())
-                    iniciarSesion()
-                } else {
-                    Toast.makeText(this@LoginActivity, "Email o contraseña incorrectos", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
     }
 
     private fun validarDatos(email: String, pass: String) : Boolean{
@@ -78,7 +65,20 @@ class LoginActivity : AppCompatActivity() {
         val botonAcceder = findViewById<Button>(R.id.loginBotonAcceder)
         botonAcceder.setOnClickListener {
             val intentAcceso = Intent (this, MainActivity::class.java)
-            startActivity(intentAcceso)
+            val email = findViewById<TextInputEditText>(R.id.loginUsuario).text.toString()
+            val pass = findViewById<TextInputEditText>(R.id.loginPass).text.toString()
+            if (validarDatos(email, pass)) {
+                val loginData = LoginRequest(email, pass)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val response: UserResponse? = retrofit.create(ApiService::class.java).getUser(loginData)
+                    if (response != null) {
+                        Log.i("jeroana", response.toString())
+                        startActivity(intentAcceso)
+                    } else {
+                        Toast.makeText(this@LoginActivity, "Email o contraseña incorrectos", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
         }
     }
 }
