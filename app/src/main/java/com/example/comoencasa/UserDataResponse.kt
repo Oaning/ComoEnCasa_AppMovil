@@ -11,14 +11,14 @@ data class UserResponse (
     @SerializedName("email") val email: String,
     @SerializedName("name") val name: String,
     @SerializedName("password") val password: String,
-    @SerializedName("user_recipe") val userRecipe: List<RecipeResponse>
+    @SerializedName("recipesList") val recipesList: List<RecipeResponse>
 )
 
 data class RecipeResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("photo") val photo: RecipePhotoResponse,
-    @SerializedName("recipe_ingredient") val recipeIngredient:  List<IngredientResponse>
+    @SerializedName("ingredientsList") val ingredientsList:  List<IngredientResponse>
 )
 
 data class RecipePhotoResponse(
@@ -32,4 +32,8 @@ data class IngredientResponse(
     @SerializedName("from_month") val fromMonth: Int,
     @SerializedName("to_month") val toMonth: Int
 )
-
+data class RegisterRequest(
+    @SerializedName("email") val email: String,
+    @SerializedName("password") val password: String,
+    @SerializedName("name") val name: String
+)

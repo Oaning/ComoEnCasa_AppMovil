@@ -63,7 +63,7 @@ class FavoritosActivity : AppCompatActivity() {
                 if(response != null){
                     Log.i("jeroana", response.toString())
                     runOnUiThread {
-                        adapter.updateList(response.userRecipe)
+                        adapter.updateList(response.recipesList)
                         binding.progressBar.isVisible = false
                     }
                 }

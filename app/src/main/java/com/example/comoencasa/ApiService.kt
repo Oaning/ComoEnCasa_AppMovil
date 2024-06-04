@@ -9,6 +9,8 @@ import retrofit2.http.Path
 interface ApiService{
     @POST("users/login")
     suspend fun getUser(@Body loginRequest: LoginRequest) : UserResponse?
+    @POST("users/new")
+    suspend fun newUser(@Body registerRequest: RegisterRequest) : UserResponse?
 
     @GET("/users/{id}")
     suspend fun getUserDetail (@Path("id") id:String): Response<UserResponse>
