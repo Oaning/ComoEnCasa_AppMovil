@@ -26,19 +26,25 @@ class RegistroActivity : AppCompatActivity() {
         Log.i("jeroana", "registro initui")
         val botonAcceder = findViewById<Button>(R.id.registroBoton)
         botonAcceder.setOnClickListener {
-            val intentAcceso = Intent (this, MainActivity::class.java)
+            val intent = Intent (this, MainActivity::class.java)
             val email = findViewById<TextInputEditText>(R.id.registroEmail).text.toString()
             val pass = findViewById<TextInputEditText>(R.id.registroPass).text.toString()
             val user = findViewById<TextInputEditText>(R.id.registroUsuario).text.toString()
             if(validarDatos(email, pass, user)){
-                val registerData = RegisterRequest(email, pass, user)
+                val registerData = UserRequest(email, pass, user)
                 CoroutineScope(Dispatchers.Main).launch {
                     try {
                         Log.i("jeroana", "registro corrutina")
                         val response: UserResponse? = Los70Fit.retrofitInstance.create(ApiService::class.java).newUser(registerData)
                         if (response != null){
                             Log.i("jeroana", response.toString())
-                            startActivity(intentAcceso)
+
+                            intent.putExtra("userId", response.id)
+                            intent.putExtra("userMail", response.email)
+                            intent.putExtra("userPass", response.password)
+                            intent.putExtra("userName", response.name)
+                            intent.putParcelableArrayListExtra("userFavorites", ArrayList(response.recipesList))
+                            startActivity(intent)
                         } else {
                             Toast.makeText(this@RegistroActivity, "Los datos son incorrectos", Toast.LENGTH_LONG).show()
                         }
@@ -48,7 +54,6 @@ class RegistroActivity : AppCompatActivity() {
                     }
                 }
             }
-            startActivity(intentAcceso)
         }
     }
 

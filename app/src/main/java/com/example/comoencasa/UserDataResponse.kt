@@ -1,6 +1,8 @@
 package com.example.comoencasa
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class LoginRequest(
     @SerializedName("email") val email: String,
@@ -14,25 +16,22 @@ data class UserResponse (
     @SerializedName("recipesList") val recipesList: List<RecipeResponse>
 )
 
+@Parcelize
 data class RecipeResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
-    @SerializedName("photo") val photo: RecipePhotoResponse,
+    @SerializedName("photo") val photo: String,
     @SerializedName("ingredientsList") val ingredientsList:  List<IngredientResponse>
-)
-
-data class RecipePhotoResponse(
-    @SerializedName("url") val url:String
-)
-
+) : Parcelable
+@Parcelize
 data class IngredientResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("type") val type: String,
     @SerializedName("from_month") val fromMonth: Int,
     @SerializedName("to_month") val toMonth: Int
-)
-data class RegisterRequest(
+) : Parcelable
+data class UserRequest(
     @SerializedName("email") val email: String,
     @SerializedName("password") val password: String,
     @SerializedName("name") val name: String

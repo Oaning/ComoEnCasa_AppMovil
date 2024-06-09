@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Como en Casa</string>
     <!-- Strings de la pantalla inicio -->
-    <string name="inicio_receta_recomendada">La receta recomendada es...</string>
+    <string name="inicio_receta_recomendada">La receta recomendada es…</string>
+    <string name="inicio_descripcion_imagen">Imagen de la receta de portada</string>
+    <string name="inicio_nombre_receta">Nombre de la receta</string>
     <string name="inicio_buscas_receta">¿Quieres buscar una receta?</string>
     <string name="inicio_primer_ingrediente">Primer ingrediente:</string>
     <string name="inicio_segundo_ingrediente">Segundo ingrediente:</string>

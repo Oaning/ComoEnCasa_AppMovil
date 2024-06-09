@@ -10,7 +10,7 @@ class FavoritosViewHolder (view: View) : RecyclerView.ViewHolder(view){
 
     fun bind(recipeItemResponse: RecipeResponse, onItemSelected: (Int) -> Unit){
         binding.ivRecetaNombre.text = recipeItemResponse.name
-        Picasso.get().load(recipeItemResponse.photo.url).into(binding.ivRecipe)
+        Picasso.get().load(recipeItemResponse.photo).into(binding.ivRecipe)
         binding.root.setOnClickListener{onItemSelected(recipeItemResponse.id)}
     }
 }

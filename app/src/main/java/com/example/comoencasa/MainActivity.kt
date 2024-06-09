@@ -3,36 +3,99 @@ package com.example.comoencasa
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import com.example.comoencasa.databinding.ActivityMainBinding
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.net.SocketTimeoutException
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
 
-        iniciarMenu()
+        val intent = intent
+        val userId = intent.getIntExtra("userId", 0)
+        val userName = intent.getStringExtra("userName")
+        val userMail = intent.getStringExtra("userMail")
+        val userPass = intent.getStringExtra("userPass")
+        val userFavorites: List<RecipeResponse>? = intent.getParcelableArrayListExtra("userFavorites")
+
+        cargarRecetaRandom()
+        iniciarMenu(userId, userName, userMail, userPass, userFavorites)
     }
 
-    fun iniciarMenu(){
-        verFavoritos()
-        verPerfil()
+    private fun cargarRecetaRandom(){
+        val itemRecipeView = findViewById<LinearLayout>(R.id.item_recipe_container)
+        val recipeImage = itemRecipeView.findViewById<ImageView>(R.id.ivRecipe)
+        val recipeName = itemRecipeView.findViewById<TextView>(R.id.ivRecetaNombre)
+        var respIdReceta: Int? = null
+        var respNomReceta: String? = null
+        var respImgReceta: String? = null
+        var respIngReceta: List<IngredientResponse>? = null
+        CoroutineScope(Dispatchers.Main).launch {
+            try{
+                Log.i("jeroana", "corrutina main")
+                val response: RecipeResponse = Los70Fit.retrofitInstance.create(ApiService::class.java).getRandomRecipe()
+                runOnUiThread {
+                    Log.i("jeroana", response.toString())
+                    respIdReceta = response.id
+                    respNomReceta = response.name
+                    respImgReceta = response.photo
+                    respIngReceta = response.ingredientsList
+                    Picasso.get().load(respImgReceta).into(recipeImage)
+                    recipeName.text = respNomReceta
+                }
+
+            } catch(e: SocketTimeoutException){
+                Toast.makeText(this@MainActivity, "solicitud ha excedido tiempo de espera", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        itemRecipeView.setOnClickListener {
+            val intent = Intent(this, RecetaActivity::class.java)
+            intent.putExtra("recipeId", respIdReceta)
+            intent.putExtra("recipeName", respNomReceta)
+            intent.putExtra("recipePhoto", respImgReceta)
+            intent.putParcelableArrayListExtra("recipeIngredients", ArrayList(respIngReceta))
+            startActivity(intent)
+        }
+    }
+
+    fun iniciarMenu(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
+        verFavoritos(userFavorites)
+        verPerfil(userId, userName, userMail, userPass)
         verMenuSemanal()
         verNevera()
     }
 
-    fun verFavoritos(){
+    fun verFavoritos(userFavorites: List<RecipeResponse>?){
         val botonFavoritos = findViewById<ImageButton>(R.id.menuBotonFavoritos)
         botonFavoritos.setOnClickListener{
-            val intentoFavoritos = Intent(this, FavoritosActivity::class.java)
-            startActivity(intentoFavoritos)
+            val intent = Intent(this, FavoritosActivity::class.java)
+            intent.putParcelableArrayListExtra("userFavorites", ArrayList(userFavorites))
+            startActivity(intent)
         }
     }
 
-    fun verPerfil(){
+    fun verPerfil(userId: Int, userName: String?, userMail: String?, userPass: String?){
         val botonPerfil = findViewById<ImageButton>(R.id.menuBotonPerfil)
         botonPerfil.setOnClickListener{
-            val intentPerfil = Intent(this, PerfilActivity::class.java)
-            startActivity(intentPerfil)
+            val intent = Intent(this, PerfilActivity::class.java)
+            intent.putExtra("userMail", userMail)
+            intent.putExtra("userPass", userPass)
+            intent.putExtra("userName", userName)
+            startActivity(intent)
         }
     }
 
@@ -51,15 +114,4 @@ class MainActivity : AppCompatActivity() {
             startActivity(intentNevera)
         }
     }
-
-
-    /*
-    al final lo haré de otra forma
-    //se coloca el menú
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        super.onCreateOptionsMenu(menu)
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
-        return true
-    }*/
 }

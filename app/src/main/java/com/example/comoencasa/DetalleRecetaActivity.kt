@@ -46,6 +46,6 @@ class DetalleRecetaActivity : AppCompatActivity() {
     }
 
     private fun createUI(recipe: RecipeResponse){
-        Picasso.get().load(recipe.photo.url).into(binding.ivRecipe)
+        Picasso.get().load(recipe.photo).into(binding.ivRecipe)
     }
 }

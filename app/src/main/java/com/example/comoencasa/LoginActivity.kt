@@ -5,20 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import com.example.comoencasa.databinding.ActivityLoginBinding
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.net.SocketTimeoutException
-import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var  binding: ActivityLoginBinding
@@ -57,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
     private fun iniciarSesion(){
         val botonAcceder = findViewById<Button>(R.id.loginBotonAcceder)
         botonAcceder.setOnClickListener {
-            val intentAcceso = Intent (this, MainActivity::class.java)
+            val intent = Intent (this, MainActivity::class.java)
             val email = findViewById<TextInputEditText>(R.id.loginUsuario).text.toString()
             val pass = findViewById<TextInputEditText>(R.id.loginPass).text.toString()
             if (validarDatos(email, pass)) {
@@ -69,7 +62,13 @@ class LoginActivity : AppCompatActivity() {
                             Los70Fit.retrofitInstance.create(ApiService::class.java).getUser(loginData)
                         if (response != null) {
                             Log.i("jeroana", response.toString())
-                            startActivity(intentAcceso)
+
+                            intent.putExtra("userId", response.id)
+                            intent.putExtra("userMail", response.email)
+                            intent.putExtra("userPass", response.password)
+                            intent.putExtra("userName", response.name)
+                            intent.putParcelableArrayListExtra("userFavorites", ArrayList(response.recipesList))
+                            startActivity(intent)
                         } else {
                             Toast.makeText(
                                 this@LoginActivity,
