@@ -18,14 +18,15 @@ class PerfilActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
+        val userId = intent.getIntExtra("userId", 0)
         val userName = intent.getStringExtra("userName")
         val userMail = intent.getStringExtra("userMail")
         val userPass = intent.getStringExtra("userPass")
-
-        rellenarDatos(userName, userMail, userPass)
+        val userFavs: List<RecipeResponse>? = intent.getParcelableArrayListExtra("userFavorites")
+        rellenarDatos(userId, userName, userMail, userPass, userFavs)
     }
 
-    private fun rellenarDatos(userName: String?, userMail: String?, userPass: String?) {
+    private fun rellenarDatos(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavs: List<RecipeResponse>?) {
         val name = findViewById<EditText>(R.id.perfilRellenarUsuario)
         name.setText(userName)
 
@@ -44,11 +45,11 @@ class PerfilActivity : AppCompatActivity() {
         val btnModificar = findViewById<Button>(R.id.perfilBotonModificar)
         btnModificar.setOnClickListener {
             val intent = Intent(this, PerfilActivity::class.java)
-            val email = findViewById<EditText>(R.id.perfilRellenarEmail).text.toString()
-            val name = findViewById<EditText>(R.id.perfilRellenarUsuario).text.toString()
-            val pass = findViewById<EditText>(R.id.perfilRellenarContraseña).text.toString()
-            val userData = UserRequest(email, name, pass)
-            if(comprobarDatos(email, name, pass)) {
+            val chngEmail = mail.text.toString()
+            val chngName = name.text.toString()
+            val chngPass = pass.text.toString()
+            if(comprobarDatos(chngEmail, chngName, chngPass)) {
+                val userData = UserDataRequest(userId, chngEmail, chngName, chngPass, userFavs)
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         Log.i("jeroana", "corrutina modificar perfil")

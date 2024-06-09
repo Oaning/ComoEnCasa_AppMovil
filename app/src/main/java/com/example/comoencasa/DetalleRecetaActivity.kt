@@ -1,7 +1,14 @@
 package com.example.comoencasa
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.ListView
+import android.widget.TextView
 import com.example.comoencasa.databinding.ActivityDetalleRecetaBinding
 import com.example.comoencasa.databinding.ActivityFavoritosBinding
 import com.squareup.picasso.Picasso
@@ -23,29 +30,30 @@ class DetalleRecetaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetalleRecetaBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_detalle_receta)
-        val id: String = intent.getStringExtra(EXTRA_ID).orEmpty()
-        getRecipeInformation(id)
+
+        val recipeName = findViewById<TextView>(R.id.tvNombreReceta)
+        val recipe = intent.getStringExtra("recipeName")
+        recipeName.setText(recipe)
+
+        val recipePhoto = findViewById<ImageView>(R.id.ivRecipePhoto)
+        val photo = intent.getStringExtra("recipePhoto")
+        Picasso.get()
+            .load(photo)
+            .into(recipePhoto)
+
+        val ingredients: List<IngredientResponse>?= intent.getParcelableArrayListExtra("recipeIngredients")
+        val ingredientsList = ingredients!!.map { it.name }.toTypedArray()
+        val adapter = RecetaAdapter(this, ingredientsList)
+        val listView = findViewById<ListView>(R.id.lvRecetaIngredientes)
+        listView.adapter = adapter
     }
+}
 
-    private fun getRecipeInformation(id: String){
-        CoroutineScope(Dispatchers.IO).launch {
-            val recipeDetail = getRetrofit().create(ApiService::class.java).getRecipeDetail(id)
-
-            if(recipeDetail.body() != null){
-                runOnUiThread { createUI(recipeDetail.body()!!) }
-            }
-        }
-    }
-
-    private fun getRetrofit(): Retrofit {
-        return Retrofit
-            .Builder()
-            .baseUrl("http://192.168.1.106")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private fun createUI(recipe: RecipeResponse){
-        Picasso.get().load(recipe.photo).into(binding.ivRecipe)
+class RecetaAdapter (private val context: Context, val ingredientes: Array<String>) : ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, ingredientes) {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val view = super.getView(position, convertView, parent)
+        val textView = view.findViewById<TextView>(android.R.id.text1)
+        textView.text = ingredientes[position]
+        return view
     }
 }

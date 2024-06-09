@@ -39,6 +39,7 @@
     <string name="perfil_contraseña">Contraseña: </string>
     <string name="perfil_boton_aceptar">Aceptar</string>
     <string name="perfil_boton_modificar">Modificar</string>
+    <string name="perfil_descripción_imagen">Imagen de perfil del usuario</string>
 
     <!-- Strings de las ventanas menú semanal y nevera -->
     <string name="menusemanal_titulo">Menú semanal</string>
@@ -47,4 +48,5 @@
 
     <!-- String del item receta -->
     <string name="item_nombre_receta">Nombre receta</string>
+    <string name="recipe_photo">Fotografía relacionada con la receta</string>
 </resources>

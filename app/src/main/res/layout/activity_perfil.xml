@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -13,14 +12,15 @@
         android:layout_height="200dp"
         android:src="@drawable/logoperfil"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/perfil_descripción_imagen" />
 
     <TextView
         android:id="@+id/perfilUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/perfilImagen"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:layout_marginStart="30dp"
         android:text="@string/perfil_usuario"
         android:textColor="@color/turquesaOscuro"
@@ -32,15 +32,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:hint="usuario"
+        android:hint="@string/perfil_usuario"
         android:layout_below="@+id/perfilImagen"
         android:layout_toEndOf="@id/perfilUsuario"
-        android:layout_marginTop="40dp"
+        android:layout_alignBaseline="@id/perfilUsuario"
         android:layout_marginStart="12dp"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/turquesaClaro"
-        />
+        android:autofillHints="@string/perfil_usuario"
+        android:inputType="text" />
 
     <TextView
         android:id="@+id/perfilEmail"
@@ -48,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/perfilUsuario"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="18dp"
         android:text="@string/perfil_Email"
         android:textColor="@color/turquesaOscuro"
         android:textSize="20sp"
@@ -59,15 +60,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:hint="email"
+        android:hint="@string/perfil_Email"
         android:layout_below="@+id/perfilUsuario"
         android:layout_toEndOf="@id/perfilEmail"
-        android:layout_marginTop="12dp"
+        android:layout_alignBaseline="@id/perfilEmail"
         android:layout_marginStart="12dp"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/turquesaClaro"
-        />
+        android:autofillHints="@string/perfil_Email"
+        android:inputType="textEmailAddress" />
 
     <TextView
         android:id="@+id/perfilContraseña"
@@ -75,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/perfilEmail"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="18dp"
         android:text="@string/perfil_contraseña"
         android:textColor="@color/turquesaOscuro"
         android:textSize="20sp"
@@ -86,15 +88,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword|text"
-        android:hint="contraseña"
+        android:hint="@string/perfil_contraseña"
         android:layout_below="@+id/perfilEmail"
         android:layout_toEndOf="@id/perfilContraseña"
-        android:layout_marginTop="12dp"
+        android:layout_alignBaseline="@id/perfilContraseña"
         android:layout_marginStart="12dp"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/turquesaClaro"
-        />
+        android:autofillHints="@string/perfil_contraseña" />
 
     <Button
         android:id="@+id/perfilBotonAceptar"

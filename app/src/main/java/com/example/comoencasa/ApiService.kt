@@ -15,7 +15,7 @@ interface ApiService{
     @GET("users/{id}")
     suspend fun getUserDetail (@Path("id") id:String): Response<UserResponse>
     @PUT("users/update")
-    suspend fun updateUser (@Body userRequest: UserRequest) : UserResponse?
+    suspend fun updateUser (@Body userDataRequest: UserDataRequest) : UserResponse?
 
     @GET("recipes/{id}")
     suspend fun getRecipeDetail (@Path("id") id:String): Response<RecipeResponse>

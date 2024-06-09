@@ -8,6 +8,18 @@ data class LoginRequest(
     @SerializedName("email") val email: String,
     @SerializedName("password") val password: String
 )
+data class UserRequest(
+    @SerializedName("email") val email: String,
+    @SerializedName("password") val password: String,
+    @SerializedName("name") val name: String
+)
+data class UserDataRequest(
+    @SerializedName("id") val id: Int,
+    @SerializedName("email") val email: String,
+    @SerializedName("name") val name: String,
+    @SerializedName("password") val password: String,
+    @SerializedName("recipesList") val recipesList: List<RecipeResponse>?
+)
 data class UserResponse (
     @SerializedName("id") val id: Int,
     @SerializedName("email") val email: String,
@@ -31,8 +43,3 @@ data class IngredientResponse(
     @SerializedName("from_month") val fromMonth: Int,
     @SerializedName("to_month") val toMonth: Int
 ) : Parcelable
-data class UserRequest(
-    @SerializedName("email") val email: String,
-    @SerializedName("password") val password: String,
-    @SerializedName("name") val name: String
-)

@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         var respNomReceta: String? = null
         var respImgReceta: String? = null
         var respIngReceta: List<IngredientResponse>? = null
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             try{
                 Log.i("jeroana", "corrutina main")
                 val response: RecipeResponse = Los70Fit.retrofitInstance.create(ApiService::class.java).getRandomRecipe()
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         itemRecipeView.setOnClickListener {
-            val intent = Intent(this, RecetaActivity::class.java)
+            val intent = Intent(this, DetalleRecetaActivity::class.java)
             intent.putExtra("recipeId", respIdReceta)
             intent.putExtra("recipeName", respNomReceta)
             intent.putExtra("recipePhoto", respImgReceta)
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
     fun iniciarMenu(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
         verFavoritos(userFavorites)
-        verPerfil(userId, userName, userMail, userPass)
+        verPerfil(userId, userName, userMail, userPass, userFavorites)
         verMenuSemanal()
         verNevera()
     }
@@ -88,13 +88,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun verPerfil(userId: Int, userName: String?, userMail: String?, userPass: String?){
+    fun verPerfil(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
         val botonPerfil = findViewById<ImageButton>(R.id.menuBotonPerfil)
         botonPerfil.setOnClickListener{
             val intent = Intent(this, PerfilActivity::class.java)
+            intent.putExtra("userId", userId)
             intent.putExtra("userMail", userMail)
             intent.putExtra("userPass", userPass)
             intent.putExtra("userName", userName)
+            intent.putParcelableArrayListExtra("userFavorites", ArrayList(userFavorites))
             startActivity(intent)
         }
     }
