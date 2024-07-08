@@ -1,40 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetalleRecetaActivity">
+    >
 
-    <TextView
-        android:id="@+id/tvNombreReceta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/inicio_nombre_receta"
-        android:textColor="@color/turquesaOscuro"
-        android:textSize="23sp"
-        android:textStyle="bold"
-        />
-    <ImageView
-        android:id="@+id/ivRecipePhoto"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_centerHorizontal="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_below="@+id/tvDetalleReceta"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/recipe_photo" />
-
-    <ListView
-        android:id="@+id/lvRecetaIngredientes"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivRecipePhoto"
-        android:layout_marginTop="10dp"
-        />
+        tools:context=".DetalleRecetaActivity">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tvNombreReceta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/inicio_nombre_receta"
+            android:textColor="@color/turquesaOscuro"
+            android:textSize="23sp"
+            android:textStyle="bold"
+            />
+        <ImageView
+            android:id="@+id/ivRecipePhoto"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerHorizontal="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_below="@+id/tvNombreReceta"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/recipe_photo" />
+
+        <ListView
+            android:id="@+id/lvRecetaIngredientes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivRecipePhoto"
+            android:layout_marginTop="10dp"
+            android:divider="@color/white"
+            />
+        <TextView
+            android:id="@+id/tvDescripcionReceta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@+id/lvRecetaIngredientes"
+            android:text="@string/inicio_nombre_receta"
+            android:textColor="@color/turquesaOscuro"
+            android:textStyle="normal"
+            android:padding="6dp"
+            />
+
+    </RelativeLayout>
+</ScrollView>

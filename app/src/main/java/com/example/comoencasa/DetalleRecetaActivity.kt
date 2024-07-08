@@ -41,11 +41,15 @@ class DetalleRecetaActivity : AppCompatActivity() {
             .load(photo)
             .into(recipePhoto)
 
-        val ingredients: List<IngredientResponse>?= intent.getParcelableArrayListExtra("recipeIngredients")
-        val ingredientsList = ingredients!!.map { it.name }.toTypedArray()
-        val adapter = RecetaAdapter(this, ingredientsList)
+        val ingredients: Array<String>?= intent.getStringArrayExtra("recipeIngredients")
+
+        val adapter = ingredients?.let { RecetaAdapter(this, it) }
         val listView = findViewById<ListView>(R.id.lvRecetaIngredientes)
         listView.adapter = adapter
+
+        val recipeDescription = findViewById<TextView>(R.id.tvDescripcionReceta)
+        val description = intent.getStringExtra("recipeDescription")
+        recipeDescription.setText(description)
     }
 }
 

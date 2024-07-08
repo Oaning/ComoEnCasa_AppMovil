@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity() {
         var respIdReceta: Int? = null
         var respNomReceta: String? = null
         var respImgReceta: String? = null
-        var respIngReceta: List<IngredientResponse>? = null
+        var respDescReceta: String? = null
+        var respIngReceta: List<String>? = null
         CoroutineScope(Dispatchers.IO).launch {
             try{
                 Log.i("jeroana", "corrutina main")
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                     respIdReceta = response.id
                     respNomReceta = response.name
                     respImgReceta = response.photo
+                    respDescReceta = response.description
                     respIngReceta = response.ingredientsList
                     Picasso.get().load(respImgReceta).into(recipeImage)
                     recipeName.text = respNomReceta
@@ -66,8 +68,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, DetalleRecetaActivity::class.java)
             intent.putExtra("recipeId", respIdReceta)
             intent.putExtra("recipeName", respNomReceta)
+            intent.putExtra("recipeDescription", respDescReceta)
             intent.putExtra("recipePhoto", respImgReceta)
-            intent.putParcelableArrayListExtra("recipeIngredients", ArrayList(respIngReceta))
+            val recipeIngredientsList = respIngReceta?.toTypedArray()
+            intent.putExtra("recipeIngredients", recipeIngredientsList)
             startActivity(intent)
         }
     }
