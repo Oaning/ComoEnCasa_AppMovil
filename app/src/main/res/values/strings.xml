@@ -49,4 +49,8 @@
     <!-- String del item receta -->
     <string name="item_nombre_receta">Nombre receta</string>
     <string name="recipe_photo">Fotografía relacionada con la receta</string>
+    <string name="lista_ingredientes">Ingredientes:</string>
+    <string name="preparacion">Preparación:</string>
+    <string name="receta_guardar">Guardar receta</string>
+    <string name="receta_quitar">Quitar receta</string>
 </resources>

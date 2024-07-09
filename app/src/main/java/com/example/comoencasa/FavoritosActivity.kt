@@ -25,16 +25,7 @@ class FavoritosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoritosBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_favoritos)
-        retrofit = getRetrofit()
         initUI()
-    }
-
-    private fun getRetrofit(): Retrofit{
-        return Retrofit
-            .Builder()
-            .baseUrl("http://192.168.1.106")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
     }
 
     private fun initUI(){
@@ -56,7 +47,7 @@ class FavoritosActivity : AppCompatActivity() {
     private fun searchByName(query: String){
         binding.progressBar.isVisible = true
         CoroutineScope(Dispatchers.IO).launch {
-            val myResponse: Response<UserResponse> = retrofit.create(ApiService::class.java).getUserDetail(query)
+            val myResponse: Response<UserResponse> = Los70Fit.retrofitInstance.create(ApiService::class.java).getUserDetail(query)
             if(myResponse.isSuccessful){
                 Log.i("jeroana", "funciona")
                 val response: UserResponse? = myResponse.body()

@@ -1,14 +1,19 @@
 package com.example.comoencasa
 
 import android.content.Context
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.RoundedCorner
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.comoencasa.databinding.ActivityDetalleRecetaBinding
 import com.example.comoencasa.databinding.ActivityFavoritosBinding
 import com.squareup.picasso.Picasso
@@ -29,35 +34,51 @@ class DetalleRecetaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetalleRecetaBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_detalle_receta)
+        setContentView(binding.root)
 
-        val recipeName = findViewById<TextView>(R.id.tvNombreReceta)
+        val recipeName = binding.tvNombreReceta
         val recipe = intent.getStringExtra("recipeName")
-        recipeName.setText(recipe)
+        recipeName.text = recipe
 
-        val recipePhoto = findViewById<ImageView>(R.id.ivRecipePhoto)
+        val recipePhoto = binding.ivRecipePhoto
         val photo = intent.getStringExtra("recipePhoto")
+        val borderColor = Color.parseColor("#17615b")
         Picasso.get()
             .load(photo)
+            .transform(ImageEdition(50, 10, borderColor, 10))
             .into(recipePhoto)
 
         val ingredients: Array<String>?= intent.getStringArrayExtra("recipeIngredients")
+        val ingredientList = ingredients?.map { Ingrediente(it) } ?: emptyList()
 
-        val adapter = ingredients?.let { RecetaAdapter(this, it) }
-        val listView = findViewById<ListView>(R.id.lvRecetaIngredientes)
-        listView.adapter = adapter
+        val adapter = IngredienteAdapter(ingredientList)
+        val recyclerView = binding.rvRecetaIngredientes
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
-        val recipeDescription = findViewById<TextView>(R.id.tvDescripcionReceta)
+        val recipeDescription = binding.tvDescripcionReceta
         val description = intent.getStringExtra("recipeDescription")
-        recipeDescription.setText(description)
+        recipeDescription.text = description
     }
 }
 
-class RecetaAdapter (private val context: Context, val ingredientes: Array<String>) : ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, ingredientes) {
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = super.getView(position, convertView, parent)
-        val textView = view.findViewById<TextView>(android.R.id.text1)
-        textView.text = ingredientes[position]
-        return view
+data class Ingrediente(val nombre: String)
+
+class IngredienteAdapter(private val ingredientes: List<Ingrediente>) : RecyclerView.Adapter<IngredienteAdapter.ViewHolder>() {
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val nombreIngrediente: TextView = itemView.findViewById(R.id.tvIngrediente)
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_ingredient, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val ingrediente = ingredientes[position]
+        holder.nombreIngrediente.text = ingrediente.nombre
+    }
+
+    override fun getItemCount() = ingredientes.size
 }

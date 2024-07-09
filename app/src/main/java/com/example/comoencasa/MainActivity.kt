@@ -76,23 +76,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun iniciarMenu(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
+    private fun iniciarMenu(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
         verFavoritos(userFavorites)
         verPerfil(userId, userName, userMail, userPass, userFavorites)
         verMenuSemanal()
         verNevera()
     }
 
-    fun verFavoritos(userFavorites: List<RecipeResponse>?){
+    private fun verFavoritos(userFavorites: List<RecipeResponse>?){
         val botonFavoritos = findViewById<ImageButton>(R.id.menuBotonFavoritos)
         botonFavoritos.setOnClickListener{
             val intent = Intent(this, FavoritosActivity::class.java)
-            intent.putParcelableArrayListExtra("userFavorites", ArrayList(userFavorites))
+            intent.putParcelableArrayListExtra("userFavorites",
+                userFavorites?.let { it1 -> ArrayList(it1) })
             startActivity(intent)
         }
     }
 
-    fun verPerfil(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
+    private fun verPerfil(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
         val botonPerfil = findViewById<ImageButton>(R.id.menuBotonPerfil)
         botonPerfil.setOnClickListener{
             val intent = Intent(this, PerfilActivity::class.java)
@@ -100,12 +101,13 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("userMail", userMail)
             intent.putExtra("userPass", userPass)
             intent.putExtra("userName", userName)
-            intent.putParcelableArrayListExtra("userFavorites", ArrayList(userFavorites))
+            intent.putParcelableArrayListExtra("userFavorites",
+                userFavorites?.let { it1 -> ArrayList(it1) })
             startActivity(intent)
         }
     }
 
-    fun verMenuSemanal(){
+    private fun verMenuSemanal(){
         val botonMenuSemanal = findViewById<ImageButton>(R.id.menuBotonMenuSemanal)
         botonMenuSemanal.setOnClickListener {
             val intentMenuSemanal = Intent(this, MenuSemanalActivity::class.java)
@@ -113,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun verNevera(){
+    private fun verNevera(){
         val botonNevera = findViewById<ImageButton>(R.id.menuBotonNevera)
         botonNevera.setOnClickListener {
             val intentNevera = Intent(this, NeveraActivity::class.java)
