@@ -38,7 +38,7 @@
     <string name="perfil_Email">E-Mail: </string>
     <string name="perfil_contraseña">Contraseña: </string>
     <string name="perfil_boton_aceptar">Aceptar</string>
-    <string name="perfil_boton_modificar">Modificar</string>
+    <string name="perfil_boton_cancelar">Cancelar</string>
     <string name="perfil_descripción_imagen">Imagen de perfil del usuario</string>
 
     <!-- Strings de las ventanas menú semanal y nevera -->

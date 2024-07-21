@@ -111,13 +111,13 @@
         />
 
     <Button
-        android:id="@+id/perfilBotonModificar"
+        android:id="@+id/perfilBotonCancelar"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="50dp"
         android:backgroundTint="@color/turquesaClaro"
-        android:text="@string/perfil_boton_modificar"
+        android:text="@string/perfil_boton_cancelar"
         android:textStyle="bold"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"

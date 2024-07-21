@@ -1,5 +1,6 @@
 package com.example.comoencasa
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -36,15 +37,15 @@ class PerfilActivity : AppCompatActivity() {
         val pass = findViewById<EditText>(R.id.perfilRellenarContraseña)
         pass.setText(userPass)
 
-        val btnAceptar = findViewById<Button>(R.id.perfilBotonAceptar)
-        btnAceptar.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+        val btnCancelar = findViewById<Button>(R.id.perfilBotonCancelar)
+        btnCancelar.setOnClickListener {
+            val intent = Intent()
+            setResult(Activity.RESULT_CANCELED, intent)
+            finish()
         }
 
-        val btnModificar = findViewById<Button>(R.id.perfilBotonModificar)
-        btnModificar.setOnClickListener {
-            val intent = Intent(this, PerfilActivity::class.java)
+        val btnAceptar = findViewById<Button>(R.id.perfilBotonAceptar)
+        btnAceptar.setOnClickListener {
             val chngEmail = mail.text.toString()
             val chngName = name.text.toString()
             val chngPass = pass.text.toString()
@@ -58,20 +59,28 @@ class PerfilActivity : AppCompatActivity() {
                         if (response != null) {
                             Log.i("jeroana", response.toString())
 
-                            Toast.makeText(this@PerfilActivity, "Datos modificados correctamente", Toast.LENGTH_LONG).show()
+                            runOnUiThread {
+                                Toast.makeText(this@PerfilActivity, "Datos modificados correctamente", Toast.LENGTH_LONG).show()
 
-                            intent.putExtra("userId", response.id)
-                            intent.putExtra("userMail", response.email)
-                            intent.putExtra("userPass", response.password)
-                            intent.putExtra("userName", response.name)
-                            intent.putParcelableArrayListExtra("userFavorites",ArrayList(response.recipesList))
+                                val resultIntent = Intent()
+                                resultIntent.putExtra("userId", response.id)
+                                resultIntent.putExtra("userMail", response.email)
+                                resultIntent.putExtra("userPass", response.password)
+                                resultIntent.putExtra("userName", response.name)
+                                resultIntent.putParcelableArrayListExtra("userFavorites", ArrayList(response.recipesList))
 
-                            startActivity(intent)
+                                setResult(Activity.RESULT_OK, resultIntent)
+                                finish()
+                            }
                         } else {
-                            Toast.makeText(this@PerfilActivity,"Los datos no han podido modificarse",Toast.LENGTH_LONG).show()
+                            runOnUiThread {
+                                Toast.makeText(this@PerfilActivity, "Los datos no han podido modificarse", Toast.LENGTH_LONG).show()
+                            }
                         }
                     } catch (e: SocketTimeoutException) {
-                        Toast.makeText(this@PerfilActivity,"Solicitud ha excedido tiempo de espera",Toast.LENGTH_LONG).show()
+                        runOnUiThread {
+                            Toast.makeText(this@PerfilActivity, "Solicitud ha excedido tiempo de espera", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             }

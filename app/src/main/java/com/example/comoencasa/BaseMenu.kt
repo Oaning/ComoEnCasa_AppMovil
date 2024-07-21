@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-
+/*
  public class BaseMenu : AppCompatActivity(){
      public fun iniciarMenu(){
          verFavoritos()
@@ -83,5 +83,5 @@ import androidx.appcompat.app.AppCompatActivity
         }
     }
 
-     */
-}
+
+}*/

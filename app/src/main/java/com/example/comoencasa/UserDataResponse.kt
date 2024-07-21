@@ -8,6 +8,12 @@ data class LoginRequest(
     @SerializedName("email") val email: String,
     @SerializedName("password") val password: String
 )
+
+data class UserRecipeDTO(
+    @SerializedName("user_id") val userId: Int,
+    @SerializedName("recipe_id")val recipeId: Int
+)
+
 data class UserRequest(
     @SerializedName("email") val email: String,
     @SerializedName("password") val password: String,

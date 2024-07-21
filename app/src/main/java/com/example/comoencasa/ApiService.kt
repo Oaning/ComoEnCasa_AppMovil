@@ -24,4 +24,10 @@ interface ApiService{
 
     @GET("ingredients/{id}")
     suspend fun getIngredientDetail (@Path("id") id:Int): Response<IngredientResponse>
+
+    @POST("users/addUserRecipe")
+    suspend fun addRecipeToUser(@Body userRecipe: UserRecipeDTO)
+
+    @POST("users/deleteUserRecipe")
+    suspend fun deleteRecipeFromUser(@Body userRecipe: UserRecipeDTO)
 }

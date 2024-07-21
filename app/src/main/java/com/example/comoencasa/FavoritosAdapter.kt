@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class FavoritosAdapter (
     var recipeList: List<RecipeResponse> = emptyList(),
-    private val onItemSelected: (Int) -> Unit
+    private val onItemSelected: (RecipeResponse) -> Unit
 ) :
     RecyclerView.Adapter<FavoritosViewHolder>(){
 

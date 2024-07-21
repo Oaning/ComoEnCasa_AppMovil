@@ -8,9 +8,9 @@ import com.squareup.picasso.Picasso
 class FavoritosViewHolder (view: View) : RecyclerView.ViewHolder(view){
     private val binding = ItemRecipeBinding.bind(view)
 
-    fun bind(recipeItemResponse: RecipeResponse, onItemSelected: (Int) -> Unit){
+    fun bind(recipeItemResponse: RecipeResponse, onItemSelected: (RecipeResponse) -> Unit){
         binding.ivRecetaNombre.text = recipeItemResponse.name
         Picasso.get().load(recipeItemResponse.photo).into(binding.ivRecipe)
-        binding.root.setOnClickListener{onItemSelected(recipeItemResponse.id)}
+        binding.root.setOnClickListener{onItemSelected(recipeItemResponse)}
     }
 }

@@ -122,45 +122,4 @@
             android:textSize="12dp"
             />
     </LinearLayout>
-  <!--
-    <ImageButton
-        android:id="@+id/menuBotonFavoritos"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="50dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/favorito"
-        />
-    <ImageButton
-        android:id="@+id/menuBotonMenu"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="50dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/calendario"
-        />
-    <ImageButton
-        android:id="@+id/menuBotonNevera"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="50dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/nevera"
-        />
-    <ImageButton
-        android:id="@+id/menuBotonPerfil"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="50dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/paquita"
-        android:scaleType="center"
-        android:adjustViewBounds="true"
-        />
-    -->
-
 </LinearLayout>
