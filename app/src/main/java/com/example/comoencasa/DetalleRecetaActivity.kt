@@ -36,23 +36,21 @@ import java.net.SocketTimeoutException
 class DetalleRecetaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetalleRecetaBinding
     private var userFavorites: MutableList<RecipeResponse> = mutableListOf()
-    private var recipeId: Int = 0
-    private var userId: Int = 0
-    private var auxUserId = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetalleRecetaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val intent = intent
-        if(intent != null){
-            userFavorites = intent.getParcelableArrayListExtra<RecipeResponse>("userFavorites")?.toMutableList() ?: mutableListOf()
-            recipeId = intent.getIntExtra("recipeId", 0)
-            val auxUserId = intent.getIntExtra("recipeId", 0)
-        }
-        userId = auxUserId
+        userFavorites = intent.getParcelableArrayListExtra<RecipeResponse>("userFavorites")?.toMutableList() ?: mutableListOf()
+        val recipeId = intent.getIntExtra("recipeId", 0)
+        val userId = intent.getIntExtra("userId", 0)
+        val userName = intent.getStringExtra("userName")
+        val userMail = intent.getStringExtra("userMail")
+        val userPass = intent.getStringExtra("userPass")
 
-
+        comprobarIngredientes(intent)
 
         val recipeName = binding.tvNombreReceta
         val recipe = intent.getStringExtra("recipeName")
@@ -66,50 +64,90 @@ class DetalleRecetaActivity : AppCompatActivity() {
             .transform(ImageEdition(50, 10, borderColor, 10))
             .into(recipePhoto)
 
-        val ingredients: Array<String>?= intent.getStringArrayExtra("recipeIngredients")
-        val ingredientList = ingredients?.map { Ingrediente(it) } ?: emptyList()
+        val recipeDescription = binding.tvDescripcionReceta
+        val description = intent.getStringExtra("recipeDescription")
+        recipeDescription.text = description
+
+        setupFavoriteButton(userId, recipeId, userMail, userPass, userName)
+    }
+
+    private fun comprobarIngredientes(intent: Intent) {
+        var ingredients: Array<String>? = emptyArray()
+
+        if (intent.getStringArrayExtra("recipeIngredients") != null) {
+            ingredients = intent.getStringArrayExtra("recipeIngredients")!!
+            updateUI(ingredients)
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val recipeId = intent.getIntExtra("recipeId", 0)
+                    val response: RecipeResponse = Los70Fit.retrofitInstance.create(ApiService::class.java).getRecipeDetail(recipeId)
+                    withContext(Dispatchers.Main) {
+                        Log.i("jeroana", response.toString())
+                        val respIngReceta = response.ingredientsList
+                        ingredients = respIngReceta?.toTypedArray() ?: emptyArray()
+                        updateUI(ingredients!!)
+                    }
+                } catch (e: SocketTimeoutException) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@DetalleRecetaActivity, "Solicitud ha excedido tiempo de espera", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateUI(ingredients: Array<String>) {
+        val ingredientList = ingredients.map { Ingrediente(it) } ?: emptyList()
 
         val adapter = IngredienteAdapter(ingredientList)
         val recyclerView = binding.rvRecetaIngredientes
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
-
-        val recipeDescription = binding.tvDescripcionReceta
-        val description = intent.getStringExtra("recipeDescription")
-        recipeDescription.text = description
-
-        setupFavoriteButton(userId)
     }
 
-    private fun setupFavoriteButton(userId: Int) {
+    private fun setupFavoriteButton(userId: Int, recipeId: Int, userMail: String?, userPass: String?, userName: String?) {
         val button = binding.botonReceta
-        val isFavorite = updateButtonState(button)
+        var isFavorite = updateButtonState(button, recipeId)
 
         button.setOnClickListener {
             if (isFavorite) {
-                removeFromFavorites(userId)
+                removeFromFavorites(userId, recipeId) { success ->
+                    if (success) {
+                        isFavorite = false
+                        updateButtonState(button, recipeId)
+                        openFavoritesActivity(userId, userMail, userPass, userName)
+                    }
+                }
             } else {
-                addToFavorites(userId)
+                addToFavorites(userId, recipeId) { success ->
+                    if (success) {
+                        isFavorite = true
+                        updateButtonState(button, recipeId)
+                        openFavoritesActivity(userId, userMail, userPass, userName)
+                    }
+                }
             }
-            updateButtonState(button)
-            val intent = Intent(this, FavoritosActivity::class.java)
-            intent.putParcelableArrayListExtra("userFavorites",
-                userFavorites?.let { ArrayList(it) } ?: ArrayList())
-            startActivity(intent)
         }
     }
 
-    private fun updateButtonState(button: Button):Boolean {
+    private fun openFavoritesActivity(userId: Int, userMail: String?, userPass: String?, userName: String?) {
+        val intentFav = Intent(this, FavoritosActivity::class.java)
+        intentFav.putExtra("userId", userId)
+        intentFav.putExtra("userMail", userMail)
+        intentFav.putExtra("userPass", userPass)
+        intentFav.putExtra("userName", userName)
+        intentFav.putParcelableArrayListExtra("userFavorites", ArrayList(userFavorites))
+        startActivity(intentFav)
+    }
+
+    private fun updateButtonState(button: Button, recipeId: Int):Boolean {
         val isFavorite = userFavorites.any { it.id == recipeId }
-        if (isFavorite) {
-            button.text = getString(R.string.receta_quitar)
-        } else {
-            button.text = getString(R.string.receta_guardar)
-        }
+        button.text = if (isFavorite) getString(R.string.receta_quitar) else getString(R.string.receta_guardar)
         return isFavorite
     }
 
-    private fun addToFavorites(userId: Int) {
+    private fun addToFavorites(userId: Int, recipeId: Int, callback: (Boolean) -> Unit) {
         val recipe = intent.getStringExtra("recipePhoto")?.let {
             RecipeResponse(
                 recipeId,
@@ -122,46 +160,58 @@ class DetalleRecetaActivity : AppCompatActivity() {
         if (recipe != null) {
             userFavorites.add(recipe)
         }
-        updateFavoritesInServer(UserRecipeDTO(userId, recipeId), true)
+
+        updateFavoritesInServer(UserRecipeDTO(userId, recipeId), true, callback)
     }
 
-    private fun removeFromFavorites(userId: Int) {
+    private fun removeFromFavorites(userId: Int, recipeId: Int, callback: (Boolean) -> Unit) {
+        val initialSize = userFavorites.size
         userFavorites.removeAll { it.id == recipeId }
-        updateFavoritesInServer(UserRecipeDTO(userId, recipeId), false)
+        val removed = userFavorites.size < initialSize
+        if (removed) {
+            updateFavoritesInServer(UserRecipeDTO(userId, recipeId), false, callback)
+        } else {
+            callback(false)
+        }
     }
 
-    private fun updateFavoritesInServer(userRecipeDTO: UserRecipeDTO, add: Boolean) {
+    private fun updateFavoritesInServer(userRecipeDTO: UserRecipeDTO, add: Boolean, callback: (Boolean) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val service = Los70Fit.retrofitInstance.create(ApiService::class.java)
                 if (add) {
                     service.addRecipeToUser(userRecipeDTO)
-                    Log.i("jeroana", "se añade receta")
+                    Log.i("jeroana", "se añade receta" + userRecipeDTO.toString())
                     withContext(Dispatchers.Main) {
                         Toast.makeText(this@DetalleRecetaActivity, "Receta añadida", Toast.LENGTH_LONG).show()
+                        callback(true)
                     }
                 } else {
                     service.deleteRecipeFromUser(userRecipeDTO)
-                    Log.i("jeroana", "se quita receta")
+                    Log.i("jeroana", "se quita receta" + userRecipeDTO.toString())
                     withContext(Dispatchers.Main) {
                         Toast.makeText(this@DetalleRecetaActivity, "Receta eliminada", Toast.LENGTH_LONG).show()
+                        callback(true)
                     }
                 }
             } catch (e: SocketTimeoutException){
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@DetalleRecetaActivity, "Solicitud ha excedido tiempo de espera", Toast.LENGTH_LONG).show()
+                    callback(false)
                 }
             } catch (e: HttpException) {
                 val errorBody = e.response()?.errorBody()?.string()
                 Log.e("jeroana", "HTTP error: ${e.code()}, $errorBody")
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@DetalleRecetaActivity, "Error HTTP: ${e.code()}", Toast.LENGTH_LONG).show()
+                    callback(false)
                 }
             } catch (e: Exception) {
                 Log.i("jeroana", "no se puede añadir ni quitar receta")
                 Log.i("jeroana", e.stackTraceToString())
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@DetalleRecetaActivity, "Error guardando o quitando receta", Toast.LENGTH_LONG).show()
+                    callback(false)
                 }
                 e.printStackTrace()
             }

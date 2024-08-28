@@ -40,6 +40,11 @@ class PerfilActivity : AppCompatActivity() {
         val btnCancelar = findViewById<Button>(R.id.perfilBotonCancelar)
         btnCancelar.setOnClickListener {
             val intent = Intent()
+            intent.putExtra("userId", userId)
+            intent.putExtra("userMail", userMail)
+            intent.putExtra("userPass", userPass)
+            intent.putExtra("userName", userName)
+            intent.putParcelableArrayListExtra("userFavorites", ArrayList(userFavs))
             setResult(Activity.RESULT_CANCELED, intent)
             finish()
         }
@@ -69,6 +74,7 @@ class PerfilActivity : AppCompatActivity() {
                                 resultIntent.putExtra("userName", response.name)
                                 resultIntent.putParcelableArrayListExtra("userFavorites", ArrayList(response.recipesList))
 
+                                rellenarDatos(response.id, response.name, response.email, response.password, response.recipesList)
                                 setResult(Activity.RESULT_OK, resultIntent)
                                 finish()
                             }

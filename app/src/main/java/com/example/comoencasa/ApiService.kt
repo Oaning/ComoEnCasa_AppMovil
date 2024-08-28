@@ -18,7 +18,7 @@ interface ApiService{
     suspend fun updateUser (@Body userDataRequest: UserDataRequest) : UserResponse?
 
     @GET("recipes/{id}")
-    suspend fun getRecipeDetail (@Path("id") id:String): Response<RecipeResponse>
+    suspend fun getRecipeDetail (@Path("id") id:Int): RecipeResponse
     @GET("recipes/random")
     suspend fun getRandomRecipe(): RecipeResponse
 

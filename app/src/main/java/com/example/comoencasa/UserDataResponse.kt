@@ -40,7 +40,7 @@ data class RecipeResponse(
     @SerializedName("name") val name: String,
     @SerializedName("photo") val photo: String,
     @SerializedName("description") val description: String,
-    @SerializedName("ingredientsList") val ingredientsList:  List<String>
+    @SerializedName("ingredientsList") val ingredientsList: List<String>? = emptyList()
 ) : Parcelable
 @Parcelize
 data class IngredientResponse(

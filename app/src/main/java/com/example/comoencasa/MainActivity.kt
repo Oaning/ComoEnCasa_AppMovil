@@ -80,17 +80,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun iniciarMenu(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
-        verFavoritos(userFavorites, userId)
+        verFavoritos(userId, userName, userMail, userPass, userFavorites)
         verPerfil(userId, userName, userMail, userPass, userFavorites)
-        verMenuSemanal()
-        verNevera()
+        verMenuSemanal(userId, userName, userMail, userPass, userFavorites)
+        verNevera(userId, userName, userMail, userPass, userFavorites)
     }
 
-    private fun verFavoritos(userFavorites: List<RecipeResponse>?, userId: Int){
+    private fun verFavoritos(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
         val botonFavoritos = findViewById<ImageButton>(R.id.menuBotonFavoritos)
         botonFavoritos.setOnClickListener{
             val intent = Intent(this, FavoritosActivity::class.java)
             intent.putExtra("userId", userId)
+            intent.putExtra("userMail", userMail)
+            intent.putExtra("userPass", userPass)
+            intent.putExtra("userName", userName)
             intent.putParcelableArrayListExtra("userFavorites",
                 userFavorites?.let { ArrayList(it) } ?: ArrayList())
             startActivity(intent)
@@ -113,35 +116,63 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_PERFIL && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                val userId = data.getIntExtra("userId", 0)
-                val userName = data.getStringExtra("userName")
-                val userMail = data.getStringExtra("userMail")
-                val userPass = data.getStringExtra("userPass")
-                val userFavorites: List<RecipeResponse>? = data.getParcelableArrayListExtra("userFavorites")
-                // Actualiza los datos del usuario en la MainActivity
-                iniciarMenu(userId, userName, userMail, userPass, userFavorites)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CODE_PERFIL -> {
+                    if (data != null) {
+                        val userId = data.getIntExtra("userId", 0)
+                        val userName = data.getStringExtra("userName")
+                        val userMail = data.getStringExtra("userMail")
+                        val userPass = data.getStringExtra("userPass")
+                        val userFavorites: List<RecipeResponse>? = data.getParcelableArrayListExtra("userFavorites")
+                        // Actualiza los datos del usuario en la MainActivity
+                        iniciarMenu(userId, userName, userMail, userPass, userFavorites)
+                    }
+                }
+                REQUEST_CODE_VOLVER -> {
+                    if (data != null) {
+                        val userId = data.getIntExtra("userId", 0)
+                        val userName = data.getStringExtra("userName")
+                        val userMail = data.getStringExtra("userMail")
+                        val userPass = data.getStringExtra("userPass")
+                        val userFavorites: List<RecipeResponse>? = data.getParcelableArrayListExtra("userFavorites")
+                        // Actualiza los datos del usuario en la MainActivity
+                        iniciarMenu(userId, userName, userMail, userPass, userFavorites)
+                    }
+                }
             }
         }
     }
 
     companion object {
         const val REQUEST_CODE_PERFIL = 1001
+        const val REQUEST_CODE_VOLVER = 1002
     }
-    private fun verMenuSemanal(){
+    private fun verMenuSemanal(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
         val botonMenuSemanal = findViewById<ImageButton>(R.id.menuBotonMenuSemanal)
         botonMenuSemanal.setOnClickListener {
             val intentMenuSemanal = Intent(this, MenuSemanalActivity::class.java)
-            startActivity(intentMenuSemanal)
+            intentMenuSemanal.putExtra("userId", userId)
+            intentMenuSemanal.putExtra("userMail", userMail)
+            intentMenuSemanal.putExtra("userPass", userPass)
+            intentMenuSemanal.putExtra("userName", userName)
+            intentMenuSemanal.putParcelableArrayListExtra("userFavorites",
+                userFavorites?.let { ArrayList(it) } ?: ArrayList())
+            startActivityForResult(intentMenuSemanal, REQUEST_CODE_VOLVER)
         }
     }
 
-    private fun verNevera(){
+    private fun verNevera(userId: Int, userName: String?, userMail: String?, userPass: String?, userFavorites: List<RecipeResponse>?){
         val botonNevera = findViewById<ImageButton>(R.id.menuBotonNevera)
         botonNevera.setOnClickListener {
             val intentNevera = Intent(this, NeveraActivity::class.java)
-            startActivity(intentNevera)
+            intentNevera.putExtra("userId", userId)
+            intentNevera.putExtra("userMail", userMail)
+            intentNevera.putExtra("userPass", userPass)
+            intentNevera.putExtra("userName", userName)
+            intentNevera.putParcelableArrayListExtra("userFavorites",
+                userFavorites?.let { ArrayList(it) } ?: ArrayList())
+            startActivityForResult(intentNevera, REQUEST_CODE_VOLVER)
         }
     }
 }

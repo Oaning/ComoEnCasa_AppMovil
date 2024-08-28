@@ -10,10 +10,26 @@ class NeveraActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nevera)
 
+        val intent = intent
+        val userId = intent.getIntExtra("userId", 0)
+
+        val userName = intent.getStringExtra("userName")
+        val userMail = intent.getStringExtra("userMail")
+        val userPass = intent.getStringExtra("userPass")
+        val userFavorites: List<RecipeResponse> = intent.getParcelableArrayListExtra("userFavorites")?: emptyList()
+
         val botonVolver = findViewById<Button>(R.id.neveraBotonVolver)
         botonVolver.setOnClickListener{
             val intentVolver = Intent(this, MainActivity::class.java)
-            startActivity(intentVolver)
+
+            intentVolver.putExtra("userId", userId)
+            intentVolver.putExtra("userMail", userMail)
+            intentVolver.putExtra("userPass", userPass)
+            intentVolver.putExtra("userName", userName)
+            intentVolver.putParcelableArrayListExtra("userFavorites", ArrayList(userFavorites))
+
+            setResult(RESULT_OK, intentVolver)
+            finish()
         }
     }
 }
